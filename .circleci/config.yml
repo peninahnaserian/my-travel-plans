@@ -1,23 +1,17 @@
 version: 2.1
-executors:
-  my-custom-executor:
-    docker:
-      - image: cimg/base:stable
-        auth:
-          # ensure you have first added these secrets
-          # visit app.circleci.com/settings/project/github/peninahnaserian/my-travel-plans/environment-variables
-          username: $DOCKER_HUB_USER
-          password: $DOCKER_HUB_PASSWORD
-jobs:
-  print-env-var:
 
-    executor: my-custom-executor
+jobs:
+  job_failure:
+    docker:
+      - image: circleci/node:13.8.0
     steps:
-      - checkout
-      - run: |
-          # echo $First_Env
+      - run: exit 1
+      - run:
+          name: "First fails"
+          command: echo "First failed"
+          when: on_fail
 
 workflows:
   my-custom-workflow:
     jobs:
-      - print-env-var
+      - job_failure
